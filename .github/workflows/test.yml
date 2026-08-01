@@ -1,0 +1,81 @@
+name: Test
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+  workflow_dispatch: {}
+
+jobs:
+  webship-js:
+    name: webship-js cucumber suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install test project dependencies
+        run: npm ci
+
+      - name: Install Playwright browser (Chromium)
+        run: npx playwright install --with-deps chromium
+
+      - name: Install DDEV
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ca-certificates curl gnupg
+          curl -fsSL https://pkg.ddev.com/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/ddev.gpg
+          echo "deb [signed-by=/etc/apt/keyrings/ddev.gpg] https://pkg.ddev.com/apt/ * *" | sudo tee /etc/apt/sources.list.d/ddev.list
+          sudo apt-get update
+          sudo apt-get install -y ddev
+          mkcert -install
+          ddev --version
+
+      - name: Build a default Astro site with DDEV
+        working-directory: demo
+        run: |
+          ddev config \
+            --project-type=generic \
+            --project-name=astro-steps-demo \
+            --docroot=dist \
+            --webserver-type=generic \
+            --nodejs-version=22
+          cat >> .ddev/config.yaml <<'EOF'
+
+          # Runs the Astro dev server inside the web container and exposes it
+          # through ddev-router at http://astro-steps-demo.ddev.site:4320
+          web_extra_daemons:
+            - name: "astro-dev"
+              command: "npm install && npm run dev -- --host 0.0.0.0 --port 4321"
+              directory: /var/www/html
+
+          web_extra_exposed_ports:
+            - name: astro
+              container_port: 4321
+              http_port: 4320
+              https_port: 4321
+          EOF
+          ddev start
+          npx wait-on http://astro-steps-demo.ddev.site:4320 --timeout 60000
+
+      - name: Run webship-js tests
+        run: npm test
+        env:
+          LAUNCH_URL: http://astro-steps-demo.ddev.site:4320
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-report
+          path: tests/reports/
+          retention-days: 14
