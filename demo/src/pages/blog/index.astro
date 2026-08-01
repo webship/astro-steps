@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = [
+	{ slug: 'hello-world', title: 'Hello World' },
+	{ slug: 'astro-steps', title: 'Testing Astro with Astro-steps' },
+];
+---
+
+<BaseLayout title="Blog">
+	<h2>Blog</h2>
+	<ul>
+		{posts.map((post) => (
+			<li><a href={`/blog/${post.slug}/`}>{post.title}</a></li>
+		))}
+	</ul>
+</BaseLayout>

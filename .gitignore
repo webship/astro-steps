@@ -1,0 +1,14 @@
+node_modules/
+tests/reports/
+test-results/
+playwright-report/
+demo/node_modules/
+demo/dist/
+demo/.astro/
+.ddev/.global_commands/
+.ddev/db_snapshots/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
