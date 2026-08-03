@@ -5,6 +5,32 @@ sites: custom step definitions for a site's generator metadata, navigation
 menu, and link health, combined with webship-js's own built-in steps in
 BDD-style Cucumber `.feature` files.
 
+## Installation
+
+To reuse these steps in your own webship-js project:
+
+```bash
+npm install --save-dev webship-js @webship-js/astro-steps
+```
+
+Add both step-definition paths to your project's `cucumber.js`:
+
+```javascript
+module.exports = {
+  default: {
+    require: [
+      'node_modules/webship-js/tests/step-definitions/**/*.js', // webship-js core steps
+      'node_modules/@webship-js/astro-steps/tests/step-definitions/astro.steps.js', // this plugin
+      'tests/step-definitions/**/*.js', // your own custom steps, if any
+    ],
+    paths: ['tests/features/**/*.feature'],
+    worldParameters: {
+      launchUrl: process.env.LAUNCH_URL || 'https://your-astro-site.example',
+    },
+  },
+};
+```
+
 ## What's in this repo
 
 | Path                          | What it is                                                     |
