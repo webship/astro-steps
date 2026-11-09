@@ -1,0 +1,54 @@
+{
+  "name": "@webship-js/astro-steps",
+  "version": "2.0.0-alpha1",
+  "description": "webship-js test project for testing an Astro site's main pages.",
+  "main": "tests/step-definitions/astro.steps.js",
+  "files": [
+    "tests/step-definitions/astro.steps.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "cucumber-js --config cucumber.js",
+    "test:chromium": "BROWSER=chromium cucumber-js --config cucumber.js",
+    "test:firefox": "BROWSER=firefox cucumber-js --config cucumber.js",
+    "test:webkit": "BROWSER=webkit cucumber-js --config cucumber.js",
+    "generate-reports": "generate-reports"
+  },
+  "keywords": [
+    "webship-js",
+    "astro",
+    "cucumber",
+    "playwright",
+    "bdd",
+    "testing",
+    "step-definitions"
+  ],
+  "author": "Webship.co",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webship/astro-steps.git"
+  },
+  "bugs": {
+    "url": "https://github.com/webship/astro-steps/issues"
+  },
+  "homepage": "https://github.com/webship/astro-steps#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">= 20.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "webship-js": "^2.0.6"
+  },
+  "peerDependencies": {
+    "webship-js": "^2.0.6"
+  },
+  "overrides": {
+    "@cucumber/cucumber": "^12"
+  }
+}
