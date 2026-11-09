@@ -1,3 +1,5 @@
+# The titles, copy and paths below are those of the demo site in demo/; swap
+# them for your own content when you copy this feature.
 Feature: Home page
   As a visitor
   I want the home page to load correctly
