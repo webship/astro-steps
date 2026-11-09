@@ -66,6 +66,9 @@ jobs:
           ddev start
           npx wait-on http://astro-steps-demo.ddev.site:4320 --timeout 60000
 
+      - name: Check the JSDoc examples and feature steps against the step regexes
+        run: npm run test:examples
+
       - name: Run webship-js tests
         run: npm test
         env:

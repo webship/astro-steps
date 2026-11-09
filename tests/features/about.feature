@@ -1,3 +1,5 @@
+# The titles, copy and paths below are those of the demo site in demo/; swap
+# them for your own content when you copy this feature.
 Feature: About page
   As a visitor
   I want to read the about page
