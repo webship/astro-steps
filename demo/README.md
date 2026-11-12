@@ -16,12 +16,15 @@ step definitions and feature files have real pages to exercise.
 | `/blog/astro-steps/`    | Sample blog post                                      |
 | `/contact/`             | A form (name, email, message) for testing form steps  |
 | `/islands/`             | A `Counter` island per client directive, one without a directive, a component with a scoped style |
-| `/static/`              | A page with no scripts at all (its own layout)        |
+| `/static/`              | A page with no scripts at all (its own layout, no router) |
 | `/images/`              | `<Image />` and `<Picture />` of `astro:assets`       |
 | `/posts/`, `/posts/<id>/` | A content collection of posts; the draft is not built |
 | `/rss.xml`              | RSS feed of the published posts                       |
 | `/sitemap-index.xml`    | Sitemap written by @astrojs/sitemap                   |
 | `/nonexistent`          | Falls through to the custom `404.astro` page          |
+
+The layout uses `<ClientRouter />` (view transitions), a `transition:persist`
+note and `transition:animate` on the content area.
 
 ## Running locally
 

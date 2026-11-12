@@ -2,8 +2,9 @@
 
 // Shared helpers for the Astro step files.
 //
-// Not a step file: it registers no step definitions. It holds the plumbing the
-// step files use: the wait budget, polling, fetching a file of the site and
+// Not a step file: it registers no step definitions, except the Before hook
+// that records the client router's events. It holds the plumbing the step
+// files use: the wait budget, polling, fetching a file of the site and
 // friendly errors.
 //
 // What the steps rely on, from Astro (checked on Astro 7.4):
@@ -13,11 +14,18 @@
 //   - An island is `<astro-island client="load|idle|visible|media|only">`. It
 //     carries the attribute `ssr` until its component has hydrated, then
 //     Astro removes it and dispatches `astro:hydrate` on the island.
+//   - `<ClientRouter />` (view transitions) writes
+//     `<meta name="astro-view-transitions-enabled" content="true">` and
+//     replaces the document by itself on navigation. It fires
+//     `astro:page-load` on the first load and on every navigation, and
+//     `astro:before-preparation`, `astro:after-preparation`,
+//     `astro:before-swap` and `astro:after-swap` around a navigation.
 //   - Optimized images (`astro:assets`) are `<img src="/_astro/name.HASH.ext"
 //     width height loading="lazy" decoding="async">`, in a `<picture>` with one
 //     `<source type="image/...">` per format when a format list is given.
 
 const { friendly } = require('webship-js/tests/step-definitions/webship');
+const { Before } = require('@cucumber/cucumber');
 
 /**
  * The per-assertion wait budget: `minWaitTime.page` from cucumber.js, and at
@@ -92,11 +100,36 @@ async function fetchSiteFile(world, path, hint) {
   };
 }
 
+// The events of Astro's client router, recorded in `window.__webshipAstroEvents`
+// from the start of every document. A client-side navigation keeps the list, a
+// full page load starts it again, so the list also shows whether the page was
+// reloaded.
+const ROUTER_EVENTS = [
+  'astro:before-preparation',
+  'astro:after-preparation',
+  'astro:before-swap',
+  'astro:after-swap',
+  'astro:page-load',
+];
+
+Before({ order: 210 }, async function () {
+  if (!this.context) return;
+  await this.context.addInitScript((names) => {
+    window.__webshipAstroEvents = [];
+    for (const name of names) {
+      document.addEventListener(name, () => {
+        window.__webshipAstroEvents.push({ name, direction: document.documentElement.getAttribute('data-astro-transition') || '' });
+      });
+    }
+  }, ROUTER_EVENTS);
+});
+
 module.exports = {
   budget,
   escapeRegExp,
   poll,
   actOrExplain,
   fetchSiteFile,
+  ROUTER_EVENTS,
   friendly,
 };

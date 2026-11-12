@@ -1,4 +1,6 @@
 ---
+import { ClientRouter } from 'astro:transitions';
+
 interface Props {
 	title: string;
 }
@@ -15,20 +17,24 @@ const { title } = Astro.props;
 		<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<title>{title} | Astro Steps Demo</title>
+		<ClientRouter />
 	</head>
 	<body>
 		<header>
 			<h1>Astro Steps Demo</h1>
 			<nav>
 				<a href="/">Home</a>
-				<a href="/about/">About</a>
+				<a href="/about/" data-astro-prefetch>About</a>
 				<a href="/blog/">Blog</a>
 				<a href="/contact/">Contact</a>
 			</nav>
 		</header>
-		<main>
+		<main transition:animate="slide">
 			<slot />
 		</main>
+		<aside id="site-note" transition:persist>
+			<p>This note stays when you move between pages.</p>
+		</aside>
 		<footer>
 			<p>&copy; 2026 Astro Steps Demo Site</p>
 		</footer>
