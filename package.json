@@ -1,6 +1,6 @@
 {
   "name": "@webship-js/astro-steps",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "webship-js step pack for Astro sites: production build, islands, shipped JavaScript, view transitions, optimized images, scoped styles, the 404 page, the sitemap and the RSS feed.",
   "main": "tests/step-definitions/astro.steps.js",
   "files": [
