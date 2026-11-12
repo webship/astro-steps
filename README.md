@@ -2,8 +2,9 @@
 
 A [webship-js](https://webship.co/docs/webship-js/2.0.x) step pack for
 [Astro](https://astro.build) sites. It tests what Astro itself does: static
-HTML with no JavaScript by default, islands and their client directives,
-optimized images, scoped styles, the 404 page, the sitemap and the RSS feed. Combine it with webship-js's built-in steps in `.feature` files.
+HTML with no JavaScript by default, islands and their client directives, view
+transitions, optimized images, scoped styles, the 404 page, the sitemap and the
+RSS feed. Combine it with webship-js's built-in steps in `.feature` files.
 
 Published to npm as [`@webship-js/astro-steps`](https://www.npmjs.com/package/@webship-js/astro-steps).
 
@@ -73,6 +74,21 @@ step file with five examples.
 | `the page should have 4 islands` / `should not have any islands` | `<astro-island>` elements; a component without a client directive is plain HTML |
 | `the "client:visible" island should( not) be hydrated` | an island has the attribute `ssr` until its component has hydrated, then Astro removes it; `client:load`, `client:idle`, `client:visible`, `client:media` and `client:only` hydrate at different times |
 
+### View transitions and prefetching (`astro-routing.steps.js`)
+
+| Step | What it relies on in Astro |
+| --- | --- |
+| `the page should( not) use view transitions` | `<ClientRouter />` writes `<meta name="astro-view-transitions-enabled" content="true">` |
+| `I click the link "text" without a full page reload` | after `astro:page-load` the router swaps the document; a marker on `window` survives it and not a page load, and `astro:page-load` fires again |
+| `I go back without a full page reload` | the same for the back button |
+| `the "astro:page-load" event should( not) have fired` | the five router events, recorded from the start of every document |
+| `the last transition should have gone "forward"` | `data-astro-transition="forward"` or `"back"` on `<html>` during the swap |
+| `the persistent elements should( not) have been kept` | `transition:persist` elements (`data-astro-transition-persist`) are moved, not recreated |
+| `the "main" element should( not) have a view transition` | `transition:animate` / `transition:name` put `data-astro-transition-scope` on the element |
+| `the page should( not) have a route announcer` | `.astro-route-announcer` with `aria-live`, added after the first navigation |
+| `the route announcer should( not) announce "title"` | the announcer says the title of the new page |
+| `the page "/about/" should( not) be prefetched` | `<link rel="prefetch">` after a hover (or a viewport prefetch), or a `speculationrules` script |
+
 ### Images (`astro-images.steps.js`)
 
 | Step | What it relies on in Astro |
@@ -96,8 +112,8 @@ runs it before the suite.
 `demo/` is a small Astro site, the fixture of the suite. It is built with
 `astro build` and served with `astro preview`, which is what CI does. See
 [demo/README.md](demo/README.md) for its pages. It uses Astro 7, Preact for the
-islands, @astrojs/sitemap, @astrojs/rss and a content collection of posts (one of
-them a draft).
+islands, @astrojs/sitemap, @astrojs/rss, a content collection of posts (one of
+them a draft) and `<ClientRouter />`.
 
 ## Running locally
 

@@ -9,6 +9,7 @@ webship-js's built-in step definitions plus this project's
 | `homepage.feature`         | Home page: generator, version, production build, navigation menu, link health |
 | `static-page.feature`      | A page that ships no JavaScript, and one that does                  |
 | `islands.feature`          | Islands and their client directives, interaction, scoped styles     |
+| `view-transitions.feature` | Router events, going back, persistent elements, announcer, prefetching |
 | `images.feature`           | Optimized images: dimensions, lazy loading, formats, loaded         |
 | `collections.feature`      | The posts of a content collection, and the draft that is not built  |
 | `seo.feature`              | The sitemap and the RSS feed                                        |

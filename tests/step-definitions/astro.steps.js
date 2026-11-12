@@ -8,8 +8,10 @@
 //                              RSS feed, page title
 //   astro-navigation.steps.js  the navigation menu and a link health check
 //   astro-islands.steps.js     islands and their client directives
+//   astro-routing.steps.js     view transitions, route announcer, prefetching
 //   astro-images.steps.js      optimized images
-//   astro-helpers.js           shared helpers (not a step file)
+//   astro-helpers.js           shared helpers and the router event recorder
+//                              (not a step file)
 //
 // Every assertion waits for its condition for the `minWaitTime.page` budget
 // (at least 10 s) and every failure is a friendly error with a hint, instead
@@ -19,4 +21,5 @@
 require('./astro-site.steps');
 require('./astro-navigation.steps');
 require('./astro-islands.steps');
+require('./astro-routing.steps');
 require('./astro-images.steps');
