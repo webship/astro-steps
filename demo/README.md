@@ -11,40 +11,29 @@ step definitions and feature files have real pages to exercise.
 | ---------------------- | ----------------------------------------------------- |
 | `/`                     | Home page with navigation links                       |
 | `/about/`               | Static content page                                   |
-| `/blog/`                | Blog index listing posts                              |
+| `/blog/`                | Blog index listing posts (hand-written pages)         |
 | `/blog/hello-world/`    | Sample blog post                                      |
 | `/blog/astro-steps/`    | Sample blog post                                      |
 | `/contact/`             | A form (name, email, message) for testing form steps  |
+| `/islands/`             | A `Counter` island per client directive, one without a directive, a component with a scoped style |
+| `/static/`              | A page with no scripts at all (its own layout)        |
+| `/images/`              | `<Image />` and `<Picture />` of `astro:assets`       |
+| `/posts/`, `/posts/<id>/` | A content collection of posts; the draft is not built |
+| `/rss.xml`              | RSS feed of the published posts                       |
+| `/sitemap-index.xml`    | Sitemap written by @astrojs/sitemap                   |
 | `/nonexistent`          | Falls through to the custom `404.astro` page          |
 
 ## Running locally
 
-### Option 1: Plain Node
-
 ```sh
 cd demo
-npm install
-npm run dev
+npm ci
+npm run build
+npx astro preview --port 4321
 ```
 
-Serves the site at `http://localhost:4321`.
+Serves the production build at `http://localhost:4321`. The test suite needs
+the production build, not `npm run dev`: the development server adds a toolbar
+and different image addresses.
 
-### Option 2: DDEV
-
-No `.ddev/` config is committed to this repo (CI generates one on the
-fly — see [.github/workflows/test.yml](../.github/workflows/test.yml)).
-To run the demo site under DDEV locally, generate a config yourself:
-
-```sh
-cd demo
-ddev config --project-type=generic --docroot=dist --webserver-type=generic
-ddev start
-ddev exec "npm install && npm run dev -- --host 0.0.0.0 --port 4321 &"
-```
-
-## Notes
-
-`astro.config.mjs` sets `vite.server.allowedHosts: true` so the dev server
-accepts requests from any hostname (e.g. a DDEV-routed one), not just
-`localhost`. This site is a test fixture only — it is not meant to be
-deployed.
+This site is a test fixture only; it is not meant to be deployed.

@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Counter from '../components/Counter.jsx';
+import Card from '../components/Card.astro';
+---
+
+<BaseLayout title="Islands">
+	<h2>Islands</h2>
+	<Card title="Scoped styles">
+		<p>This card has a style that applies to it only.</p>
+	</Card>
+	<p>Without a client directive a component is plain HTML and never hydrates.</p>
+	<Counter label="static" />
+	<p>This island hydrates as soon as the page loads.</p>
+	<Counter label="load" client:load />
+	<p>This island hydrates when the browser is idle.</p>
+	<Counter label="idle" client:idle />
+	<p>This island renders in the browser only.</p>
+	<Counter label="only" client:only="preact" />
+	<div style="height: 3000px" aria-hidden="true"></div>
+	<p>This island hydrates when it scrolls into view.</p>
+	<Counter label="visible" client:visible />
+</BaseLayout>

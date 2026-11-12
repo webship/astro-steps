@@ -2,10 +2,13 @@ name: Test
 
 on:
   push:
-    branches: ['**']
+    branches: [2.0.x]
   pull_request:
-    branches: ['**']
+    branches: [2.0.x]
   workflow_dispatch: {}
+
+env:
+  LAUNCH_URL: http://localhost:4321
 
 jobs:
   webship-js:
@@ -23,56 +26,37 @@ jobs:
           node-version: '22'
 
       - name: Install test project dependencies
-        run: npm install
+        run: npm install --no-audit --no-fund
 
       - name: Install Playwright browser (Chromium)
         run: npx playwright install --with-deps chromium
 
-      - name: Install DDEV
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ca-certificates curl gnupg
-          curl -fsSL https://pkg.ddev.com/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/ddev.gpg
-          echo "deb [signed-by=/etc/apt/keyrings/ddev.gpg] https://pkg.ddev.com/apt/ * *" | sudo tee /etc/apt/sources.list.d/ddev.list
-          sudo apt-get update
-          sudo apt-get install -y ddev
-          mkcert -install
-          ddev --version
-
-      - name: Build a default Astro site with DDEV
+      - name: Build the demo site
         working-directory: demo
         run: |
-          ddev config \
-            --project-type=generic \
-            --project-name=astro-steps-demo \
-            --docroot=dist \
-            --webserver-type=generic \
-            --nodejs-version=22
-          cat >> .ddev/config.yaml <<'EOF'
+          npm ci --no-audit --no-fund
+          npm run build
 
-          # Runs the Astro dev server inside the web container and exposes it
-          # through ddev-router at http://astro-steps-demo.ddev.site:4320
-          web_extra_daemons:
-            - name: "astro-dev"
-              command: "npm install && npm run dev -- --host 0.0.0.0 --port 4321"
-              directory: /var/www/html
-
-          web_extra_exposed_ports:
-            - name: astro
-              container_port: 4321
-              http_port: 4320
-              https_port: 4321
-          EOF
-          ddev start
-          npx wait-on http://astro-steps-demo.ddev.site:4320 --timeout 60000
+      - name: Serve the production build
+        working-directory: demo
+        run: |
+          nohup npx astro preview --port 4321 --host 0.0.0.0 > /tmp/astro-preview.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -s -o /dev/null "$LAUNCH_URL/" && exit 0
+            sleep 1
+          done
+          echo "astro preview did not become ready in time" >&2
+          cat /tmp/astro-preview.log >&2
+          exit 1
 
       - name: Check the JSDoc examples and feature steps against the step regexes
         run: npm run test:examples
 
+      - name: Check that every feature step is defined once
+        run: npx cucumber-js --config cucumber.js --dry-run --format summary
+
       - name: Run webship-js tests
         run: npm test
-        env:
-          LAUNCH_URL: http://astro-steps-demo.ddev.site:4320
 
       - name: Upload test report
         if: always()
