@@ -1,0 +1,12 @@
+---
+import { Image, Picture } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import gradient from '../assets/gradient.png';
+---
+
+<BaseLayout title="Images">
+	<h2>Optimized images</h2>
+	<Image src={gradient} alt="A colour gradient" width={320} />
+	<Picture src={gradient} alt="The same gradient in modern formats" formats={['avif', 'webp']} width={320} />
+	<img src="/favicon.svg" alt="The site icon, not optimized" width="32" height="32" />
+</BaseLayout>

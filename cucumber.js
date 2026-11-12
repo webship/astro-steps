@@ -15,7 +15,7 @@ module.exports = {
       'json:tests/reports/cucumber_report.json',
     ],
     worldParameters: {
-      launchUrl: process.env.LAUNCH_URL || 'http://astro-steps-demo.ddev.site:4320',
+      launchUrl: process.env.LAUNCH_URL || 'http://localhost:4321',
       // Video of the browser: 'off', 'on', 'on-failure' or 'tag' (scenarios tagged @video; @no-video opts out).
       video: { mode: process.env.WEBSHIP_VIDEO || 'off', dir: './videos', size: { width: 1280, height: 720 }, filenamePattern: '{datetime}.{feature_file}.{scenario}.{status}.{ext}' },
       // JavaScript errors the page raises: 'warn' reports them, 'fail' fails the scenario, 'off' ignores them; @js-fail, @js-warn and @js-off per scenario.

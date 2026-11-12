@@ -5,6 +5,10 @@ Feature: 404 page
   I want a helpful page when I hit a broken link
   So that I'm not stuck on a blank error page
 
+  Scenario: The build produced a 404 page
+    Given I am on the homepage
+    Then the 404 page should be available
+
   Scenario: Visiting a non-existent path shows the custom 404 page
     Given I am on "/this-page-does-not-exist"
     Then the response status code should be 404
