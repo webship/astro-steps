@@ -64,7 +64,7 @@ step file with five examples.
 
 | Step | What it checks |
 | --- | --- |
-| `I should( not) see a navigation menu with the following links:` | links of the page's `<nav>` by text, and optionally part of the `href` (a table with `text` and `path`) |
+| `I should( not) see a navigation menu with the following links:` | links of the page's `<nav>` by text (the link whose whole text it is, else one that contains it), and optionally part of the `href` (a table with `text` and `path`) |
 | `all navigation links should resolve successfully` | every `<nav>` link answers below 400 |
 
 ### Islands (`astro-islands.steps.js`)

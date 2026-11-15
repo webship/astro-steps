@@ -4,12 +4,16 @@
 // page's <nav> and a health check that crawls them.
 
 const { Then } = require('@cucumber/cucumber');
-const { budget, friendly } = require('./astro-helpers');
+const {
+  budget, escapeRegExp, poll, friendly,
+} = require('./astro-helpers');
 
 /**
  * Assert that the page's <nav> element contains (or does not contain)
  * links with the given text. Optionally assert each link's href contains a
- * given substring. The table has a `text` column and an optional `path`
+ * given substring. A link whose whole text is the given text is preferred
+ * to one that only contains it, so "Blog" is the "Blog" link and not the
+ * site title "My Blog". The table has a `text` column and an optional `path`
  * (or `href`) column; the examples below show the step line, the table
  * follows it in the feature file.
  *
@@ -24,9 +28,16 @@ Then(/^(I |we )*should( not)* see a navigation menu with the following links:$/,
   const timeout = budget(this);
   for (const row of table.hashes()) {
     const text = row.text || row.Text;
-    const link = this.page.locator('nav a', { hasText: text }).first();
+    // The link whose whole text is the wanted text wins; a link that only
+    // contains it ("Astro Blog" for "Blog") is taken when no link is exact.
+    const exact = this.page.locator('nav a').filter({ hasText: new RegExp(`^\\s*${escapeRegExp(text)}\\s*$`) });
+    const partial = this.page.locator('nav a', { hasText: text });
     try {
-      await link.waitFor({ state: notCase ? 'hidden' : 'visible', timeout });
+      if (notCase) {
+        await partial.first().waitFor({ state: 'hidden', timeout });
+      } else {
+        await exact.or(partial).first().waitFor({ state: 'visible', timeout });
+      }
     } catch {
       throw friendly({
         message: notCase
@@ -39,21 +50,16 @@ Then(/^(I |we )*should( not)* see a navigation menu with the following links:$/,
 
     const path = row.path || row.href || row.Path || row.Href;
     if (path) {
+      const link = (await exact.count()) ? exact.first() : partial.first();
       let href = null;
-      try {
-        await this.page.waitForFunction(
-          ({ t, p }) => {
-            const a = Array.from(document.querySelectorAll('nav a')).find((el) => (el.textContent || '').includes(t));
-            return Boolean(a) && (a.getAttribute('href') || '').includes(p);
-          },
-          { t: text, p: path },
-          { timeout }
-        );
-      } catch {
+      const ok = await poll(this, async () => {
         href = await link.getAttribute('href').catch(() => null);
+        return (href || '').includes(path);
+      });
+      if (!ok) {
         throw friendly({
           message: `Expected the navigation link "${text}" href to contain "${path}" but got "${href}".`,
-          hint: 'The `path` column is matched as a substring of the link href; with a trailing-slash site, write "/about/" or just "/about".',
+          hint: 'The link whose whole text is the `text` column is read first, then a link that contains it; the `path` column is matched as a substring of the link href, so with a trailing-slash site write "/about/" or just "/about".',
         });
       }
     }
