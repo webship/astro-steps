@@ -1,3 +1,5 @@
+<p align="center"><img src="https://raw.githubusercontent.com/webship/astro-steps/2.0.x/assets/logo.svg" alt="Astro logo" width="96"></p>
+
 # astro-steps
 
 A [webship-js](https://webship.co/docs/webship-js/2.0.x) step pack for
@@ -138,3 +140,7 @@ See [tests/features/README.md](tests/features/README.md) for the feature files.
 ## License
 
 [MIT](LICENSE)
+
+## Logo
+
+The Astro logo in this README comes from Simple Icons 16.37.0 (CC0-1.0), filled with the colour the set lists for the brand. The Astro name and logo are trademarks of their owner; this pack is not affiliated with or endorsed by them.
