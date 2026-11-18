@@ -9,7 +9,7 @@ Feature: Blog
     Given I am on "/blog/"
     Then the page generator should start with "Astro"
     And I should see "Hello World"
-    And I should see "Testing Astro with Astro-steps"
+    And I should see "Testing a site with step definitions"
 
   Scenario Outline: Blog post pages load correctly
     Given I am on "<path>"
@@ -18,13 +18,13 @@ Feature: Blog
     And the "Back to blog" link should contain "/blog/"
 
     Examples:
-      | path                     | heading                          |
-      | /blog/hello-world/       | Hello World                      |
-      | /blog/astro-steps/       | Testing Astro with Astro-steps   |
+      | path                      | heading                              |
+      | /blog/hello-world/        | Hello World                          |
+      | /blog/testing-with-steps/ | Testing a site with step definitions |
 
   Scenario: Clicking a post from the blog index opens it
     Given I am on "/blog/"
     When I click "Hello World"
     And I wait until the page is loaded
     Then I should be on "/blog/hello-world/"
-    And I should see "This is the first post on the Astro Steps demo blog."
+    And I should see "This is the first post on the demo blog."

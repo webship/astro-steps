@@ -9,7 +9,7 @@ Feature: View transitions
     And the "astro:after-swap" event should not have fired
     When I click the link "About" without a full page reload
     Then I should be on "/about/"
-    And the page title should end with "| Astro Steps Demo"
+    And the page title should end with "| Webship Test Site"
     And I should see "About this demo"
     And the "astro:before-swap" event should have fired
     And the "astro:after-swap" event should have fired
@@ -32,8 +32,8 @@ Feature: View transitions
     Given I am on the homepage
     When I click the link "About" without a full page reload
     Then the page should have a route announcer
-    And the route announcer should announce "About | Astro Steps Demo"
-    And the route announcer should not announce "Home | Astro Steps Demo"
+    And the route announcer should announce "About | Webship Test Site"
+    And the route announcer should not announce "Home | Webship Test Site"
 
   Scenario: The content area has a view transition
     Given I am on the homepage

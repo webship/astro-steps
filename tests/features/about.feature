@@ -10,7 +10,7 @@ Feature: About page
     Then I should be on "/about/"
     And the page generator should start with "Astro"
     And I should see "About this demo"
-    And the page title should end with "| Astro Steps Demo"
+    And the page title should end with "| Webship Test Site"
 
   Scenario: About page links back to the home page
     Given I am on "/about/"
