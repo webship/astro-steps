@@ -5,6 +5,7 @@
   "main": "tests/step-definitions/astro.steps.js",
   "files": [
     "tests/step-definitions/*.js",
+    "tests/features",
     "README.md",
     "LICENSE"
   ],
