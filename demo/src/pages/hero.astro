@@ -1,0 +1,11 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import gradient from '../assets/gradient.png';
+---
+
+<BaseLayout title="Hero image">
+	<h2>An image at the top of the page</h2>
+	<Image src={gradient} alt="A colour gradient at the top of the page" width={320} loading="eager" />
+	<p>The image above is loaded at once (<code>loading="eager"</code>), not lazily.</p>
+</BaseLayout>

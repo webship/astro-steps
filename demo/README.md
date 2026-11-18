@@ -18,6 +18,8 @@ step definitions and feature files have real pages to exercise.
 | `/islands/`             | A `Counter` island per client directive, one without a directive, a component with a scoped style |
 | `/static/`              | A page with no scripts at all (its own layout, no router) |
 | `/images/`              | `<Image />` and `<Picture />` of `astro:assets`       |
+| `/hero/`                | An `<Image loading="eager" />` at the top of the page |
+| `/below-the-fold/`      | A lazy `<Image />` far below the fold                 |
 | `/posts/`, `/posts/<id>/` | A content collection of posts; the draft is not built |
 | `/rss.xml`              | RSS feed of the published posts                       |
 | `/sitemap-index.xml`    | Sitemap written by @astrojs/sitemap                   |

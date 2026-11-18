@@ -35,6 +35,16 @@ Feature: View transitions
     And the route announcer should announce "About | Webship Test Site"
     And the route announcer should not announce "Home | Webship Test Site"
 
+  Scenario: A page load starts the router anew
+    Given I am on the homepage
+    Then the page should not have a route announcer
+    When I click the link "About" without a full page reload
+    Then the page should have a route announcer
+    And the persistent elements should have been kept
+    When I reload the page
+    Then the persistent elements should not have been kept
+    And the page should not have a route announcer
+
   Scenario: The content area has a view transition
     Given I am on the homepage
     Then the "main" element should have a view transition

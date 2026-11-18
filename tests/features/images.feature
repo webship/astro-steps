@@ -19,3 +19,16 @@ Feature: Optimized images
   Scenario: A page without optimized images
     Given I am on "/about/"
     Then I should not see an optimized image
+
+  Scenario: An image at the top of the page loads at once
+    Given I am on "/hero/"
+    Then I should see an optimized image
+    And every optimized image should not load lazily
+    And every optimized image should be loaded
+
+  Scenario: An image far below the fold loads when it is scrolled to
+    Given I am on "/below-the-fold/"
+    Then every optimized image should load lazily
+    And every optimized image should not be loaded
+    When I scroll to the bottom of the page
+    Then every optimized image should be loaded
