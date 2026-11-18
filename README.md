@@ -10,6 +10,128 @@ RSS feed. Combine it with webship-js's built-in steps in `.feature` files.
 
 Published to npm as [`@webship-js/astro-steps`](https://www.npmjs.com/package/@webship-js/astro-steps).
 
+## From nothing to a green run
+
+What the machine needs: git and Node.js 22.12 or later with npm (Astro 7
+asks for it). No container: the site is a static production build that
+`astro preview` serves.
+
+**1. The site.** The demo site of this repository, built the way CI builds
+it: the pages of [The demo site](#the-demo-site) with islands, view
+transitions, optimized images, a content collection, the sitemap and the RSS
+feed. Leave `astro preview` running in its own terminal (run by an AI coding
+agent, Astro 7 starts it in the background by itself; `npx astro preview stop`
+stops it).
+
+```bash
+git clone https://github.com/webship/astro-steps.git
+cd astro-steps/demo
+npm ci
+npm run build
+npx astro preview --port 4321
+```
+
+The site answers at `http://localhost:4321`.
+
+**2. A test project**, in another terminal:
+
+```bash
+mkdir astro-tests && cd astro-tests
+npm init -y
+npm install --save-dev webship-js @webship-js/astro-steps
+npx init-webship-js
+```
+
+`npx init-webship-js` writes `cucumber.js`, `playwright.config.ts`, the
+`tests/` folders with a first feature and the `npm test` scripts, and installs
+Chromium. npm usually runs it already when it installs webship-js; a second
+run changes nothing.
+
+**3. `cucumber.js`.** Replace the file with the wiring of the pack: the step
+files of webship-js and the entry file of the pack, and the address of the
+site. The suite needs no account (see [Test users](#test-users)).
+
+```javascript
+module.exports = {
+  default: {
+    requireModule: ['tsx/cjs'],
+    require: [
+      'node_modules/webship-js/tests/step-definitions/**/*.js',
+      'node_modules/@webship-js/astro-steps/tests/step-definitions/astro.steps.js',
+      'tests/step-definitions/**/*.js',
+    ],
+    paths: ['tests/features/**/*.feature'],
+    format: ['@cucumber/pretty-formatter', 'json:tests/reports/cucumber_report.json'],
+    worldParameters: {
+      launchUrl: process.env.LAUNCH_URL || 'http://localhost:4321',
+      // The waits webship-js adds around each page, scenario and step (milliseconds).
+      minWaitTime: { page: 3000, before_scenario: 0, after_scenario: 0, before_step: 0, after_step: 0 },
+    },
+  },
+};
+```
+
+**4. A first feature**, `tests/features/first-run.feature`:
+
+```gherkin
+Feature: First run
+  Scenario: The home page is a production build
+    Given I am on the homepage
+    Then the site should be a production build
+    And the page generator version should start with "7"
+
+  Scenario: The islands hydrate as their directives say
+    Given I am on "/islands/"
+    Then the page should have 4 islands
+    And the "client:load" island should be hydrated
+```
+
+**5. Run it.**
+
+```bash
+npm test
+```
+
+A green first run prints every step, then the summary (the starter feature of
+`npx init-webship-js` and the two scenarios above, passed) and the HTML report
+it wrote:
+
+```
+3 scenarios (3 passed)
+8 steps (8 passed)
+0m01.843s (executing steps: 0m01.811s)
+[webship-js] HTML report → …/astro-tests/tests/reports/cucumber_report.html
+```
+
+From there, copy the features of [`tests/features/`](tests/features/) (they
+also ship in the package, under
+`node_modules/@webship-js/astro-steps/tests/features/`): together they use
+every step of the pack, against the pages of [the demo site](#the-demo-site).
+
+### What the suite tests
+
+The features of this repository run every step of the pack against the demo
+site's production build, and CI builds it and runs them on every change: the
+build itself (the generator, a production build and not the development
+server, the 404 page it wrote, the sitemap and the RSS feed of
+@astrojs/sitemap and @astrojs/rss); pages with no JavaScript at all and pages
+that ship only what they ask for; islands (each client directive hydrating
+when it should, a hydrated island responding, a component without a
+directive staying plain HTML) and scoped styles; view transitions (links and
+the back button without a full page reload, the router's events, the
+direction of a transition, an element that persists, the route announcer, an
+animated area, prefetching a link under the mouse); optimized images of
+`astro:assets` (dimensions, lazy loading, modern formats, loaded in the
+browser); a content collection (its list, a page built from an entry, a draft
+that is not built); the navigation; a form; the custom 404 page; and the
+structural and serious accessibility checks of the main pages.
+
+Not tested: server-side rendering (`output: 'server'`), actions, the
+middleware, sessions and anything else that needs an adapter and a running
+server; other UI frameworks than Preact for the islands; `astro dev` (the
+pack refuses it on purpose); internationalised routes. A run leaves nothing:
+the site is static.
+
 ## Install in your own project
 
 ```bash
