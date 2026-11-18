@@ -336,7 +336,7 @@ Then(/^(?:the )?RSS feed(?: at "([^"]*)")? should( not)* list "([^"]*)?"$/, asyn
  * Useful for Astro sites that append a site name to every page title (e.g.
  * "Home | My Site").
  *
- * Example #1: Then the page title should end with "| Astro Steps Demo"
+ * Example #1: Then the page title should end with "| Webship Test Site"
  * Example #2: Then the page title should end with "| My Site"
  * Example #3: And the page title should end with "Blog"
  * Example #4: But the page title should not end with "| Draft"

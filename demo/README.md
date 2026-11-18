@@ -1,7 +1,7 @@
-# Astro Steps Demo Site
+# The demo site
 
-A minimal [Astro](https://astro.build) site used as the test fixture for the
-[Astro-steps](../README.md) webship-js test project. It has a handful of main
+A minimal [Astro](https://astro.build) site, the "Webship Test Site", used as
+the test fixture of this [step pack](../README.md). It has a handful of main
 pages (home, about, blog index + 2 posts, contact form, 404) so the custom
 step definitions and feature files have real pages to exercise.
 
@@ -13,7 +13,7 @@ step definitions and feature files have real pages to exercise.
 | `/about/`               | Static content page                                   |
 | `/blog/`                | Blog index listing posts (hand-written pages)         |
 | `/blog/hello-world/`    | Sample blog post                                      |
-| `/blog/astro-steps/`    | Sample blog post                                      |
+| `/blog/testing-with-steps/` | Sample blog post                                  |
 | `/contact/`             | A form (name, email, message) for testing form steps  |
 | `/islands/`             | A `Counter` island per client directive, one without a directive, a component with a scoped style |
 | `/static/`              | A page with no scripts at all (its own layout, no router) |

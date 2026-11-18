@@ -10,8 +10,8 @@ Feature: Home page
     Then the page generator should start with "Astro"
     And the page generator version should start with "7"
     And the site should be a production build
-    And I should see "Welcome to the Astro Steps Demo Site"
-    And the page title should end with "| Astro Steps Demo"
+    And I should see "Welcome to the Webship Test Site"
+    And the page title should end with "| Webship Test Site"
 
   Scenario: Home page links to About and Blog
     Given I am on the homepage

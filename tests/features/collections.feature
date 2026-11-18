@@ -15,7 +15,7 @@ Feature: Content collections
 
   Scenario: A post page is built from the collection
     Given I am on "/posts/first-post/"
-    Then the page title should end with "| Astro Steps Demo"
+    Then the page title should end with "| Webship Test Site"
     And I should see "This is the body of The first post."
     And the "Back to posts" link should contain "/posts/"
 

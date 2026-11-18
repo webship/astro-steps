@@ -194,7 +194,7 @@ When(/^(I |we )*go back without a full page reload$/, async function (pronounCas
  * Example #4: Then the "astro:before-swap" event should have fired
  * Example #5: And the "astro:page-load" event should not have fired
  */
-Then(/^the "(astro:[a-z-]+)" event should( not)* have fired$/, async function (name, notCase) {
+Then(/^the "([^"]+)" event should( not)* have fired$/, async function (name, notCase) {
   if (!ROUTER_EVENTS.includes(name)) {
     throw friendly({ message: `"${name}" is not an event this step knows.`, hint: `Use one of ${ROUTER_EVENTS.map((event) => `"${event}"`).join(', ')}.` });
   }
@@ -327,11 +327,11 @@ Then(/^(?:the )?page should( not)* have a route announcer$/, async function (not
  * navigation. Astro announces the title of the new page (else its h1, else
  * its path).
  *
- * Example #1: Then the route announcer should announce "About | Astro Steps Demo"
- * Example #2: And the route announcer should announce "Blog | Astro Steps Demo"
- * Example #3: But the route announcer should not announce "Home | Astro Steps Demo"
- * Example #4: Then route announcer should announce "Contact | Astro Steps Demo"
- * Example #5: And the route announcer should announce "Islands | Astro Steps Demo"
+ * Example #1: Then the route announcer should announce "About | Webship Test Site"
+ * Example #2: And the route announcer should announce "Blog | Webship Test Site"
+ * Example #3: But the route announcer should not announce "Home | Webship Test Site"
+ * Example #4: Then route announcer should announce "Contact | Webship Test Site"
+ * Example #5: And the route announcer should announce "Islands | Webship Test Site"
  */
 Then(/^(?:the )?route announcer should( not)* announce "([^"]*)?"$/, async function (notCase, expected) {
   let actual;
