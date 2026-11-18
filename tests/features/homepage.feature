@@ -9,6 +9,8 @@ Feature: Home page
     Given I am on the homepage
     Then the page generator should start with "Astro"
     And the page generator version should start with "7"
+    But the page generator version should not start with "6"
+    And the page generator should not contain "beta"
     And the site should be a production build
     And I should see "Welcome to the Webship Test Site"
     And the page title should end with "| Webship Test Site"
@@ -26,6 +28,10 @@ Feature: Home page
       | About | /about  |
       | Blog  | /blog   |
       | Contact | /contact |
+    But I should not see a navigation menu with the following links:
+      | text |
+      | Shop |
+      | Docs |
 
   Scenario: All navigation links resolve successfully
     Given I am on the homepage

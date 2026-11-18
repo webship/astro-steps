@@ -1,0 +1,13 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import gradient from '../assets/gradient.png';
+---
+
+<BaseLayout title="Below the fold">
+	<h2>An image far below the fold</h2>
+	<p>Scroll down: the image at the bottom loads lazily, when it nears the viewport.
+	The space above it is taller than the distance at which the browser starts loading a lazy image.</p>
+	<div style="height: 12000px" aria-hidden="true"></div>
+	<Image src={gradient} alt="A colour gradient far below the fold" width={280} />
+</BaseLayout>

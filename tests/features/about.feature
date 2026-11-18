@@ -11,6 +11,7 @@ Feature: About page
     And the page generator should start with "Astro"
     And I should see "About this demo"
     And the page title should end with "| Webship Test Site"
+    But the page title should not end with "| About"
 
   Scenario: About page links back to the home page
     Given I am on "/about/"
