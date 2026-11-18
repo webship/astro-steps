@@ -39,6 +39,18 @@ Point `LAUNCH_URL` at a **production build**: `astro build`, served by
 and different image addresses; the step "the site should be a production build"
 tells you at once when the wrong server is behind `LAUNCH_URL`.
 
+## Test users
+
+None. The suite tests a production build (`astro build`, served by
+`astro preview`), which has no sign-in: `cucumber.js` lists no accounts (its
+`worldParameters` has no `users`), no scenario logs in, and the demo site of
+[`demo/`](demo/README.md) has no account to create. The JSON of the accounts
+is empty:
+
+```json
+{}
+```
+
 ## Steps
 
 Every Then step takes `should` or `should not`, every step takes `I`, `we` or
