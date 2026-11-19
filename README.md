@@ -33,6 +33,23 @@ npx astro preview --port 4321
 
 The site answers at `http://localhost:4321`.
 
+In the [Webship Workspace](https://github.com/webship/workspace), its Astro
+plugin makes the same demo from this repository (as the template of a new
+site), builds it and serves the production build in a container with the
+Node.js Astro asks for, so the machine needs no Node.js 22 for the site. In a
+sites folder of the workspace (`test/` here; `dev/`, `sandboxes/` and `demos/`
+work the same):
+
+```bash
+bash core/scripts/plugins.sh --require astro --with-needs
+bash core/scripts/plugins.sh --activate astro --with-needs
+bash core/scripts/plugins.sh --install astro
+bash test/cmd-astro-project.sh mysite --install --template webship/astro-steps/demo
+```
+
+That site answers at `https://mysite.ddev.site` (step 5); the first feature
+and the features of [`tests/features/`](tests/features/) pass on it.
+
 **2. A test project**, in another terminal:
 
 ```bash
@@ -92,6 +109,7 @@ Feature: First run
 npm test
 ```
 
+(`LAUNCH_URL=https://mysite.ddev.site npm test` for a site at another address.)
 A green first run prints every step, then the summary (the starter feature of
 `npx init-webship-js` and the two scenarios above, passed) and the HTML report
 it wrote:
