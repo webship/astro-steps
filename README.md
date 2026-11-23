@@ -12,9 +12,9 @@ Published to npm as [`@webship-js/astro-steps`](https://www.npmjs.com/package/@w
 
 ## From nothing to a green run
 
-What the machine needs: git and Node.js 22.12 or later with npm (Astro 7
-asks for it). No container: the site is a static production build that
-`astro preview` serves.
+What the machine needs: git and Node.js 24 or later with npm (webship-js asks
+for it; Astro 7 needs 22.12 or later). No container: the site is a static
+production build that `astro preview` serves.
 
 **1. The site.** The demo site of this repository, built the way CI builds
 it: the pages of [The demo site](#the-demo-site) with islands, view
@@ -36,7 +36,7 @@ The site answers at `http://localhost:4321`.
 In the [Webship Workspace](https://github.com/webship/workspace), its Astro
 plugin makes the same demo from this repository (as the template of a new
 site), builds it and serves the production build in a container with the
-Node.js Astro asks for, so the machine needs no Node.js 22 for the site. In a
+Node.js Astro asks for, so the site does not use the machine's Node.js. In a
 sites folder of the workspace (`test/` here; `dev/`, `sandboxes/` and `demos/`
 work the same):
 
@@ -271,7 +271,7 @@ them a draft) and `<ClientRouter />`.
 
 ## Running locally
 
-Requires Node.js 22.12 or later (Astro 7).
+Requires Node.js 24 or later (webship-js; Astro 7 needs 22.12 or later).
 
 ```bash
 npm install

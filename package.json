@@ -41,7 +41,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">= 20.0"
+    "node": ">= 24.0"
   },
   "devDependencies": {
     "ts-node": "^10.9.2",
